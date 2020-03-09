@@ -1,6 +1,9 @@
 var express = require('express');
+const bodyParser = require("body-parser");
 var app = express();
 
+const urlencodedParser = bodyParser.urlencoded({extended: false});
+app.use(bodyParser.urlencoded({ extended: false }))
 app.get('/', function (req, res) {
   res.send({response:123});
 });
@@ -10,6 +13,17 @@ app.get('/about', function (req, res) {
 app.get('/random.text', function (req, res) {
   res.send('random.text');
 });
+app.post('/', function (req, res) {
+  res.send('POST request to the homepage');
+});
+app.post('/post',urlencodedParser, function (req, res) {
+  console.log(req.body);
+  console.log(res.body);
+  
+  res.send('POST request to the homepage');
+});
+
+
 var cb0 = function (req, res, next) {
   console.log('CB0');
   next();
