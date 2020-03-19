@@ -1,9 +1,16 @@
 var express = require('express');
 const bodyParser = require("body-parser");
+var cors = require('cors')
 var app = express();
 
-const urlencodedParser = bodyParser.urlencoded({extended: false});
-app.use(bodyParser.urlencoded({ extended: false }))
+var corsOptions = {
+  origin: '192.168.0.15',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}));
 app.get('/', function (req, res) {
   res.send({response:123});
 });
@@ -16,11 +23,17 @@ app.get('/random.text', function (req, res) {
 app.post('/', function (req, res) {
   res.send('POST request to the homepage');
 });
-app.post('/post',urlencodedParser, function (req, res) {
+app.post('/post', function (req, res) {
   console.log(req.body);
   console.log(res.body);
   
   res.send('POST request to the homepage');
+});
+app.post('/postPhoto',cors(corsOptions), function (req, res) {
+  console.log(req.body);
+  console.log(res.body);
+  
+  res.send({'email':'topaluyser@mlai.com','number':'89153447594'});
 });
 
 
